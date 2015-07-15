@@ -73,6 +73,11 @@ func storeDataItem(path []string, object dataItem) error {
 	return nil
 }
 
+func deleteDataItem(path []string) error {
+	// TODO Have to get the parent of the path, then remove the child
+	return nil
+}
+
 func handleData(w http.ResponseWriter, r *http.Request) {
 
 	//saverequest.Save(r)
@@ -122,6 +127,15 @@ func handleData(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Fprint(w, "There was an error saving the item.", err.Error())
 			return
+		}
+
+		return
+	} else if r.Method == "DELETE" {
+
+		err := deleteDataItem(path)
+
+		if err != nil {
+			fmt.Fprint(w, "There was an error deleting the item.", err.Error())
 		}
 
 		return
