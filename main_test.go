@@ -13,6 +13,7 @@ func TestHandleData(t *testing.T) {
 
 func TestAutoIndex(t *testing.T) {
 	// need to reset root
+	root = dataItem{}
 	t.Log("Trying empty index.")
 	req, _ := saverequest.FakeRequest("GET", "/data/", map[string]string{}, "")
 	w := httptest.NewRecorder()
@@ -57,6 +58,7 @@ func TestAutoIndex(t *testing.T) {
 
 func TestIndex(t *testing.T) {
 	// need to reset root
+	root = dataItem{}
 	t.Log("Trying empty index.")
 	req, _ := saverequest.FakeRequest("GET", "/data/", map[string]string{}, "")
 	w := httptest.NewRecorder()
@@ -71,6 +73,8 @@ func TestIndex(t *testing.T) {
 }
 
 func Test404(t *testing.T) {
+	// need to reset root
+	root = dataItem{}
 	req, _ := saverequest.FakeRequest("GET", "/data/notfound", map[string]string{}, "")
 	w := httptest.NewRecorder()
 	handleData(w, req)
