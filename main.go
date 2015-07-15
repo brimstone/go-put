@@ -128,9 +128,26 @@ func handleData(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func displayItem(base dataItem) string {
+	out := fmt.Sprintf("value: %s\n", base.value)
+	out = out + fmt.Sprintf("mime: %s\n", base.mime)
+	for child, item := range base.children {
+		out = out + fmt.Sprintf("child: %s\n", child)
+		childout := strings.Replace(displayItem(item), "\n", "\n----", -1)
+		out = out + "----" + strings.TrimRight(childout, "-")
+	}
+	return out
+}
+
+func handleTree(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, displayItem(root))
+	return
+}
+
 func main() {
 
 	saverequest.WriteRequests = true
 	http.HandleFunc("/data/", handleData)
+	http.HandleFunc("/tree/", handleTree)
 	http.ListenAndServe(":8000", nil)
 }
