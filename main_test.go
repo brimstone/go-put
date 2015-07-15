@@ -11,7 +11,8 @@ func TestHandleData(t *testing.T) {
 	saverequest.TestRequestFiles(t, ".", handleData)
 }
 
-func TestIndex(t *testing.T) {
+func TestAutoIndex(t *testing.T) {
+	// need to reset root
 	t.Log("Trying empty index.")
 	req, _ := saverequest.FakeRequest("GET", "/data/", map[string]string{}, "")
 	w := httptest.NewRecorder()
@@ -52,6 +53,21 @@ func TestIndex(t *testing.T) {
 		return
 	}
 
+}
+
+func TestIndex(t *testing.T) {
+	// need to reset root
+	t.Log("Trying empty index.")
+	req, _ := saverequest.FakeRequest("GET", "/data/", map[string]string{}, "")
+	w := httptest.NewRecorder()
+	handleData(w, req)
+	if w.Code != 404 && w.Body.String() != "" {
+		t.Errorf("Unable to get empty request")
+		t.Errorf("%d: %s", w.Code, w.Body.String())
+		return
+	} else {
+		t.Log("Got generated index")
+	}
 }
 
 func Test404(t *testing.T) {
